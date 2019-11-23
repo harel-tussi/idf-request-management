@@ -38,12 +38,25 @@ router.get("/:id/:type", async (req, res) => {
     }
   } else if (type === "commander") {
     if (await Commander.findOne({ id })) {
-      res.send(await Request.find({ commander: id }));
+      res.send(await Request.find({ commander: id, status: 1 }));
     } else {
       res.status(500).send("Commander Not Found");
     }
   } else {
     res.status(500).send("Type Is Not Correct");
+  }
+});
+
+router.put("/approveordecline", async (req, res, next) => {
+  const { _id, result, commanderNote } = req.body;
+  const request = await Request.findById(_id);
+  if (request) {
+    request.status = result;
+    request.commanderNote = commanderNote;
+    await request.save();
+    res.send("success");
+  } else {
+    res.send("Request not Found").status(500);
   }
 });
 

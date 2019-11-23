@@ -13,3 +13,7 @@ export const VERIFY_TOKEN = token => {
       .catch(err => {});
   };
 };
+
+export const SIGNOUT = () => {
+  return { type: "SIGNOUT" };
+};

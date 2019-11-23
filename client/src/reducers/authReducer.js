@@ -22,7 +22,12 @@ export default (state = initialState, action) => {
         loading: false,
         user: action.payload
       };
-
+    case "SIGNOUT": {
+      return {
+        ...state,
+        user: null
+      };
+    }
     default:
       return state;
   }

@@ -20,7 +20,7 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <Header />
+        {this.props.user && <Header />}
         <Switch>
           <AuthRoute path="/login" component={Login} />
           <AuthRoute path="/register" component={Register} />
