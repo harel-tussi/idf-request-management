@@ -17,7 +17,7 @@ router.post("/addcommander", async (req, res, next) => {
           lastName,
           password: cryptPassword(password)
         }).save();
-        res.send(createToken({ id, firstName, lastName }));
+        res.send(createToken({ id, firstName, lastName, type: "commander" }));
       } else {
         res.status(500).send("Soldier Already Exists!");
       }

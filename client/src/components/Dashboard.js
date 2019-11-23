@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import {
   Icon,
   Label,
@@ -10,9 +10,9 @@ import {
   Input
 } from "semantic-ui-react";
 import axios from "axios";
+import Request from "./Request";
 import { connect } from "react-redux";
-import moment from "moment";
-class Dashboard extends Component {
+class Dashboard extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -136,40 +136,20 @@ class Dashboard extends Component {
                     commanderNote
                   }) => {
                     return (
-                      <Table.Row key={_id}>
-                        <Table.Cell>
-                          <Label ribbon>{content}</Label>
-                        </Table.Cell>
-                        <Table.Cell>
-                          {moment(startDate).format("DD/MM/YYYY")}
-                        </Table.Cell>
-                        <Table.Cell>
-                          {moment(endDate).format("DD/MM/YYYY")}
-                        </Table.Cell>
-                        <Table.Cell>
-                          {type === "soldier" ? (
-                            status === 1 ? (
-                              <Icon name="question" />
-                            ) : status === 2 ? (
-                              <Icon name="checkmark" />
-                            ) : (
-                              <Icon name="x" />
-                            )
-                          ) : (
-                            <Button
-                              onClick={() => this.handleChooseRequest(_id)}
-                            >
-                              Approve or Decline
-                            </Button>
-                          )}
-                        </Table.Cell>
-                        <Table.Cell>
-                          {moment(submissionDate).format("DD/MM/YYYY")}
-                        </Table.Cell>
-                        {type === "soldier" && (
-                          <Table.Cell>{commanderNote}</Table.Cell>
-                        )}
-                      </Table.Row>
+                      <Request
+                        key={_id}
+                        request={{
+                          _id,
+                          content,
+                          startDate,
+                          endDate,
+                          status,
+                          submissionDate,
+                          commanderNote,
+                          handleChooseRequest: this.handleChooseRequest,
+                          type: this.props.user.type
+                        }}
+                      />
                     );
                   }
                 )}

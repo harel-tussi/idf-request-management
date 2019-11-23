@@ -6,7 +6,6 @@ import { SIGNOUT } from "../actions/authActions";
 import { withRouter } from "react-router-dom";
 function Header(props) {
   const [activeItem, setActiveItem] = useState("home");
-
   const handleSignOut = () => {
     localStorage.removeItem("token");
     props.signout();
@@ -18,9 +17,11 @@ function Header(props) {
       <Menu.Item>
         <NavLink to="/">Home</NavLink>
       </Menu.Item>
-      <Menu.Item>
-        <NavLink to="/addrequest">Add Request</NavLink>
-      </Menu.Item>
+      {props.user.type === "soldier" && (
+        <Menu.Item>
+          <NavLink to="/addrequest">Add Request</NavLink>
+        </Menu.Item>
+      )}
       <Menu.Menu position="right">
         <Menu.Item>
           <Button primary onClick={() => handleSignOut()}>

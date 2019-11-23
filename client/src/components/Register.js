@@ -22,7 +22,8 @@ class Register extends Component {
       firstName: "",
       lastName: "",
       personalCommander: "",
-      options: []
+      options: [],
+      type: "soldier"
     };
   }
 
@@ -49,25 +50,58 @@ class Register extends Component {
   };
 
   handleOnSubmit = e => {
-    const { id, password, firstName, lastName, personalCommander } = this.state;
+    const {
+      id,
+      password,
+      firstName,
+      lastName,
+      personalCommander,
+      type
+    } = this.state;
     e.preventDefault();
-    const user = { id, password, firstName, lastName, personalCommander };
-    axios
-      .post("/soldier/addsoldier", {
+    if (type === "soldier") {
+      const user = {
         id,
         password,
         firstName,
         lastName,
-        personalCommander
-      })
-      .then(({ data }) => {
-        localStorage.setItem("token", data);
-        this.props.signin(user);
-        this.props.history.push("/");
-      })
-      .catch(({ response: { data } }) => {
-        this.setState({ error: data });
-      });
+        personalCommander,
+        type: "soldier"
+      };
+      axios
+        .post("/soldier/addsoldier", {
+          id,
+          password,
+          firstName,
+          lastName,
+          personalCommander
+        })
+        .then(({ data }) => {
+          localStorage.setItem("token", data);
+          this.props.signin(user);
+          this.props.history.push("/");
+        })
+        .catch(({ response: { data } }) => {
+          this.setState({ error: data });
+        });
+    } else {
+      const user = { id, password, firstName, lastName, type: "commander" };
+      axios
+        .post("/commander/addcommander", {
+          id,
+          password,
+          firstName,
+          lastName
+        })
+        .then(({ data }) => {
+          localStorage.setItem("token", data);
+          this.props.signin(user);
+          this.props.history.push("/");
+        })
+        .catch(({ response: { data } }) => {
+          this.setState({ error: data });
+        });
+    }
   };
 
   render() {
@@ -77,7 +111,8 @@ class Register extends Component {
       firstName,
       lastName,
       options,
-      personalCommander
+      personalCommander,
+      type
     } = this.state;
     return (
       <Grid
@@ -126,14 +161,33 @@ class Register extends Component {
                 value={lastName}
                 onChange={this.handleOnChange}
               />
-              <Form.Field>
-                <Select
-                  name="personalCommander"
+              <Form.Group inline>
+                <label>Type</label>
+                <Form.Radio
+                  label="Soldier"
+                  value="soldier"
+                  checked={this.state.type === "soldier"}
+                  name="soldier"
                   onChange={this.handleOnChange}
-                  placeholder="Choose your commander"
-                  options={options}
-                  value={personalCommander}
                 />
+                <Form.Radio
+                  label="Commadner"
+                  value="commander"
+                  checked={this.state.type === "commander"}
+                  name="commander"
+                  onChange={this.handleOnChange}
+                />
+              </Form.Group>
+              <Form.Field>
+                {this.state.type === "soldier" && (
+                  <Select
+                    name="personalCommander"
+                    onChange={this.handleOnChange}
+                    placeholder="Choose your commander"
+                    options={options}
+                    value={personalCommander}
+                  />
+                )}
               </Form.Field>
               <Button type="submit" color="teal" fluid size="large">
                 Register
