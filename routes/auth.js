@@ -19,7 +19,8 @@ router.post("/login", async (req, res, next) => {
               id: soldier.id,
               firstName: soldier.firstName,
               lastName: soldier.lastName,
-              personalCommander: soldier.personalCommander
+              personalCommander: soldier.personalCommander,
+              type: "soldier"
             })
           );
         } else {
@@ -36,7 +37,8 @@ router.post("/login", async (req, res, next) => {
             createToken({
               id: commander.id,
               firstName: commander.firstName,
-              lastName: commander.lastName
+              lastName: commander.lastName,
+              type: "commander"
             })
           );
         } else {

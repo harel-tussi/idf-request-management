@@ -28,4 +28,23 @@ router.post("/addrequest", async (req, res, next) => {
   }
 });
 
+router.get("/:id/:type", async (req, res) => {
+  const { id, type } = req.params;
+  if (type === "soldier") {
+    if (await Soldier.findOne({ id })) {
+      res.send(await Request.find({ soldier: id }));
+    } else {
+      res.status(500).send("Soldier Not Found");
+    }
+  } else if (type === "commander") {
+    if (await Commander.findOne({ id })) {
+      res.send(await Request.find({ commander: id }));
+    } else {
+      res.status(500).send("Commander Not Found");
+    }
+  } else {
+    res.status(500).send("Type Is Not Correct");
+  }
+});
+
 module.exports = router;

@@ -5,8 +5,10 @@ import Register from "./components/Register";
 import Dashboard from "./components/Dashboard";
 import PrivateRoute from "./components/auth/PrivateRoute";
 import AuthRoute from "./components/auth/AuthRoute";
+import Header from "./components/Header";
 import { VERIFY_TOKEN } from "./actions/authActions";
 import { connect } from "react-redux";
+import AddRequest from "./components/AddRequest";
 
 class App extends Component {
   componentDidMount() {
@@ -18,10 +20,12 @@ class App extends Component {
   render() {
     return (
       <Router>
+        <Header />
         <Switch>
           <AuthRoute path="/login" component={Login} />
           <AuthRoute path="/register" component={Register} />
           <PrivateRoute path="/" exact component={Dashboard} />
+          <PrivateRoute path="/addrequest" exact component={AddRequest} />
         </Switch>
       </Router>
     );

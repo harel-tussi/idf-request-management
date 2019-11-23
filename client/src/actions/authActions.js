@@ -7,7 +7,7 @@ export const VERIFY_TOKEN = token => {
   return dipatch => {
     axios
       .get("/auth/verifytoken", { headers: { authorization: token } })
-      .then(data => {
+      .then(({ data }) => {
         dipatch({ type: "VERIFY_TOKEN", payload: data });
       })
       .catch(err => {});
