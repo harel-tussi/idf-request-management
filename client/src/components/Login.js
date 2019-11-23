@@ -7,7 +7,8 @@ import {
   Header,
   Image,
   Message,
-  Segment
+  Segment,
+  Container
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { SIGNIN } from "../actions/authActions";
@@ -54,61 +55,72 @@ class Login extends Component {
     return (
       <Grid
         textAlign="center"
-        style={{ height: "100vh" }}
+        style={{ height: "80vh" }}
         verticalAlign="middle"
+        columns={2}
+        divided
       >
-        <Grid.Column style={{ maxWidth: 450 }}>
-          <Header as="h2" color="teal" textAlign="center">
-            Log-in to your account
-          </Header>
-          <Form onSubmit={this.handleOnSubmit} size="large">
-            <Segment stacked>
-              <Form.Input
-                fluid
-                icon="user"
-                iconPosition="left"
-                placeholder="ID"
-                name="id"
-                value={id}
-                onChange={this.handleOnChange}
-              />
-              <Form.Input
-                fluid
-                icon="lock"
-                iconPosition="left"
-                placeholder="Password"
-                name="password"
-                type="password"
-                value={password}
-                onChange={this.handleOnChange}
-              />
-              <Form.Group inline>
-                <label>Type</label>
-                <Form.Radio
-                  label="Soldier"
-                  value="soldier"
-                  checked={type === "soldier"}
-                  name="soldier"
+        <Grid.Row>
+          <Grid.Column style={{ maxWidth: "450px" }}>
+            <Header as="h2" color="blue">
+              Your Requests Manager
+            </Header>
+          </Grid.Column>
+          <Grid.Column style={{ maxWidth: "450px" }}>
+            <Header as="h2" color="teal" textAlign="center">
+              Log-in to your account
+            </Header>
+            <Form onSubmit={this.handleOnSubmit} size="large">
+              <Segment stacked>
+                <Form.Input
+                  required={true}
+                  fluid
+                  icon="user"
+                  iconPosition="left"
+                  placeholder="ID"
+                  name="id"
+                  value={id}
                   onChange={this.handleOnChange}
                 />
-                <Form.Radio
-                  label="Commadner"
-                  value="commander"
-                  checked={type === "commander"}
-                  name="commander"
+                <Form.Input
+                  required={true}
+                  fluid
+                  icon="lock"
+                  iconPosition="left"
+                  placeholder="Password"
+                  name="password"
+                  type="password"
+                  value={password}
                   onChange={this.handleOnChange}
                 />
-              </Form.Group>
-              <Button type="submit" color="teal" fluid size="large">
-                Login
-              </Button>
-            </Segment>
-          </Form>
-          {this.state.error && <Message error>{this.state.error}</Message>}
-          <Message>
-            New to us? <Link to="/register">Sign Up</Link>
-          </Message>
-        </Grid.Column>
+                <Form.Group inline>
+                  <label>Type</label>
+                  <Form.Radio
+                    label="Soldier"
+                    value="soldier"
+                    checked={type === "soldier"}
+                    name="soldier"
+                    onChange={this.handleOnChange}
+                  />
+                  <Form.Radio
+                    label="Commadner"
+                    value="commander"
+                    checked={type === "commander"}
+                    name="commander"
+                    onChange={this.handleOnChange}
+                  />
+                </Form.Group>
+                <Button type="submit" color="green" fluid size="large">
+                  Login
+                </Button>
+              </Segment>
+            </Form>
+            {this.state.error && <Message error>{this.state.error}</Message>}
+            <Message>
+              New to us? <Link to="/register">Sign Up</Link>
+            </Message>
+          </Grid.Column>
+        </Grid.Row>
       </Grid>
     );
   }

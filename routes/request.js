@@ -3,9 +3,9 @@ const Soldier = require("../models/Soldier");
 const Commander = require("../models/Commander");
 const Request = require("../models/Request");
 const validateInput = require("../util/validateInput");
-
+const authenticate = require("../middleware/authenticate");
 // adding new Soldier to DB
-router.post("/addrequest", async (req, res, next) => {
+router.post("/addrequest", authenticate("soldier"), async (req, res, next) => {
   if (validateInput(req.body)) {
     const { content, startDate, endDate, soldier, commander } = req.body;
     if (
@@ -28,7 +28,7 @@ router.post("/addrequest", async (req, res, next) => {
   }
 });
 
-router.get("/:id/:type", async (req, res) => {
+router.get("/:id/:type", authenticate(), async (req, res) => {
   const { id, type } = req.params;
   if (type === "soldier") {
     if (await Soldier.findOne({ id })) {
@@ -47,17 +47,21 @@ router.get("/:id/:type", async (req, res) => {
   }
 });
 
-router.put("/approveordecline", async (req, res, next) => {
-  const { _id, result, commanderNote } = req.body;
-  const request = await Request.findById(_id);
-  if (request) {
-    request.status = result;
-    request.commanderNote = commanderNote;
-    await request.save();
-    res.send("success");
-  } else {
-    res.send("Request not Found").status(500);
+router.put(
+  "/approveordecline",
+  authenticate("commander"),
+  async (req, res, next) => {
+    const { _id, result, commanderNote } = req.body;
+    const request = await Request.findById(_id);
+    if (request) {
+      request.status = result;
+      request.commanderNote = commanderNote;
+      await request.save();
+      res.send("success");
+    } else {
+      res.send("Request not Found").status(500);
+    }
   }
-});
+);
 
 module.exports = router;

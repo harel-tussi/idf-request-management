@@ -24,8 +24,12 @@ class Dashboard extends PureComponent {
   }
 
   componentDidMount() {
+    console.log(this.props);
+
     axios
-      .get(`/request/${this.props.user.id}/${this.props.user.type}`)
+      .get(`/request/${this.props.user.id}/${this.props.user.type}`, {
+        headers: { authorization: this.props.token }
+      })
       .then(({ data }) => {
         this.setState({ requests: data });
       })
@@ -45,11 +49,15 @@ class Dashboard extends PureComponent {
   handleApproveOrDecline = result => {
     if (this.state.commanderNote) {
       axios
-        .put("/request/approveordecline", {
-          _id: this.state.chosenRequest,
-          result,
-          commanderNote: this.state.commanderNote
-        })
+        .put(
+          "/request/approveordecline",
+          {
+            _id: this.state.chosenRequest,
+            result,
+            commanderNote: this.state.commanderNote
+          },
+          { headers: { authorization: this.props.token } }
+        )
         .then(() => {
           const filteredRequests = this.state.requests.filter(
             request => request._id !== this.state.chosenRequest

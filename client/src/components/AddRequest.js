@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Checkbox, Form, Container } from "semantic-ui-react";
+import { Button, Form, Container, Grid } from "semantic-ui-react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { connect } from "react-redux";
@@ -10,7 +10,7 @@ class AddRequest extends Component {
     this.state = {
       content: "",
       startDate: new Date(),
-      endDate: new Date()
+      endDate: null
     };
   }
 
@@ -27,13 +27,17 @@ class AddRequest extends Component {
     const { content, startDate, endDate } = this.state;
     const { id: soldier, personalCommander: commander } = this.props.user;
     axios
-      .post("/request/addrequest", {
-        content,
-        startDate,
-        endDate,
-        soldier,
-        commander
-      })
+      .post(
+        "/request/addrequest",
+        {
+          content,
+          startDate,
+          endDate,
+          soldier,
+          commander
+        },
+        { headers: { authorization: this.props.token } }
+      )
       .then(({ data }) => {
         this.props.history.push("/");
       })
@@ -49,6 +53,7 @@ class AddRequest extends Component {
           <Form.Field>
             <label>Reason</label>
             <input
+              required
               value={this.state.content}
               name="content"
               onChange={this.handleChange}
@@ -58,6 +63,7 @@ class AddRequest extends Component {
           <Form.Field>
             <label>Start Date</label>
             <DatePicker
+              required
               minDate={new Date()}
               selected={this.state.startDate}
               onChange={date => this.handleDateChange(date, "startDate")}
@@ -66,6 +72,7 @@ class AddRequest extends Component {
           <Form.Field>
             <label>End Date</label>
             <DatePicker
+              required
               minDate={this.state.startDate}
               selected={this.state.endDate}
               onChange={date => this.handleDateChange(date, "endDate")}

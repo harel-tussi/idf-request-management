@@ -117,12 +117,19 @@ class Register extends Component {
     return (
       <Grid
         textAlign="center"
-        style={{ height: "100vh" }}
+        style={{ height: "80vh" }}
         verticalAlign="middle"
+        divided
+        columns={2}
       >
+        <Grid.Column style={{ maxWidth: "450px" }}>
+          <Header as="h2" color="blue">
+            Your Requests Manager
+          </Header>
+        </Grid.Column>
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as="h2" color="teal" textAlign="center">
-            Soldier! Create New Account
+            Create New Account
           </Header>
           <Form onSubmit={this.handleOnSubmit} size="large">
             <Segment stacked>
@@ -134,6 +141,7 @@ class Register extends Component {
                 name="id"
                 value={id}
                 onChange={this.handleOnChange}
+                required={true}
               />
               <Form.Input
                 fluid
@@ -144,6 +152,7 @@ class Register extends Component {
                 type="password"
                 value={password}
                 onChange={this.handleOnChange}
+                required={true}
               />
               <Form.Input
                 fluid
@@ -152,6 +161,7 @@ class Register extends Component {
                 type="text"
                 value={firstName}
                 onChange={this.handleOnChange}
+                required={true}
               />
               <Form.Input
                 fluid
@@ -160,6 +170,7 @@ class Register extends Component {
                 type="text"
                 value={lastName}
                 onChange={this.handleOnChange}
+                required={true}
               />
               <Form.Group inline>
                 <label>Type</label>
@@ -178,9 +189,10 @@ class Register extends Component {
                   onChange={this.handleOnChange}
                 />
               </Form.Group>
-              <Form.Field>
+              <Form.Field required={true}>
                 {this.state.type === "soldier" && (
                   <Select
+                    req
                     name="personalCommander"
                     onChange={this.handleOnChange}
                     placeholder="Choose your commander"
@@ -189,7 +201,7 @@ class Register extends Component {
                   />
                 )}
               </Form.Field>
-              <Button type="submit" color="teal" fluid size="large">
+              <Button type="submit" color="red" fluid size="large">
                 Register
               </Button>
             </Segment>
