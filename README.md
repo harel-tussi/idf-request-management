@@ -1,5 +1,4 @@
-Welcome Requests Management !
-This App enables soldiers to request special Requests from their commanders
-in an easy way
-
-all you need to do is to sign up and request from your commander anything you want
+ברוך הבאים למערכת ניהול בקשות יציאה
+מערכת זו מאפשרת לכל חייל להגיש בקשות יציאה למפקדו בצורה נוחה ויעילה
+כל מה שצריך לעשות הוא להירשם ולהתחיל להגיש בקשות
+נבנה בעזרת: React, Redux, Express, MongoDB
